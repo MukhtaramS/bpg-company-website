@@ -2713,3 +2713,197 @@ body {
 .site-header.scrolled {
   box-shadow: 0 4px 20px rgba(10, 22, 40, 0.06);
 }
+
+/* ============================================
+   MOBILE / PHONE REFINEMENTS  (≤ 768px only)
+   Appended last so it overrides earlier rules at
+   equal specificity. Desktop (≥ 769px) is untouched.
+   ============================================ */
+@media (max-width: 768px) {
+
+  /* --- No horizontal scrolling --- */
+  html,
+  body {
+    overflow-x: hidden;          /* clip anything that bleeds past the edge */
+  }
+  .container {
+    padding: 0 1rem;             /* tighter gutters than the 1.5rem desktop value */
+  }
+
+  /* --- Hamburger nav (panel already toggles via .nav.open) --- */
+  .nav {
+    top: 70px;                   /* align with the 70px header; was 60px → 10px overlap */
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    min-height: 44px;            /* real tap target */
+    width: 100%;
+  }
+  .lang-btn {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 0.85rem;
+  }
+  .burger {
+    width: 44px;                 /* was 40px */
+    height: 44px;
+  }
+
+  /* --- Hero: contained rounded "card" look ---
+     Rounding lives on .hero (the SECTION), not .hero-inner, because the blue
+     gradient (.hero::before), the hero-bg overlay (.hero::after) AND the
+     injected constellation <canvas> are all full-bleed on .hero. overflow:hidden
+     clips all three to the rounded card; the 12px margin reveals the page bg.
+     The gradient + canvas themselves are unchanged. */
+  .hero {
+    margin: 12px;
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: auto;
+  }
+  .hero-inner {
+    padding: 24px 20px;          /* tighter internal padding, card feel */
+  }
+
+  /* Image card is decorative; hide on phones so the text card matches the
+     mockup and the stats strip sits at the true bottom of the card. */
+  .hero-visual {
+    display: none;
+  }
+
+  /* headline */
+  .hero-title {
+    font-size: clamp(1.5rem, 6vw, 1.9rem);
+    letter-spacing: -0.3px;      /* weight unchanged (inherits 800) */
+    overflow-wrap: break-word;
+  }
+  /* subtitle — brighter + shortened on mobile (long desktop paragraph
+     collapsed via font-size:0; concise mobile copy injected, so the markup
+     and desktop layout stay untouched) */
+  .hero-subtitle {
+    font-size: 0;
+    line-height: 0;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle::after {
+    content: "AD*STAR®, ПП-мешки, биг-бэги, ткань и пряжа — напрямую с заводов Ирана.";
+    display: block;
+    color: #C5D2F5;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* feature chips: one tidy wrapping row, short labels (long desktop text
+     hidden via font-size:0; mobile labels injected so the markup/desktop
+     stay untouched). */
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hero-tag {
+    padding: 8px 14px;
+    font-size: 0;                /* collapse the long desktop label */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .hero-tag::after { font-size: 0.8rem; }
+  .hero-tag:nth-child(1)::after { content: "AD*STAR®"; }
+  .hero-tag:nth-child(2)::after { content: "ПП-мешки"; }
+  .hero-tag:nth-child(3)::after { content: "Биг-бэги"; }
+  .hero-tag:nth-child(4)::after { content: "ПП-ткань"; }
+
+  /* two buttons side by side, auto width */
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-actions br { display: none; }        /* neutralize the <br> in the markup */
+  .hero-actions .btn {
+    width: auto;
+    flex: 0 0 auto;
+  }
+  .hero-secondary-text {
+    flex-basis: 100%;            /* drops to its own line below the buttons */
+    margin-top: 0.25rem;
+  }
+  .btn-primary {
+    background: #F97216;
+    box-shadow: 0 4px 16px rgba(249, 114, 22, 0.4);
+  }
+  .btn-outline-light {
+    background: rgba(255, 255, 255, 0.08);   /* translucent white */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  /* stats: flat 3-column strip pinned to the card's bottom edge, thin
+     dividers between, short labels (long desktop text collapsed + injected). */
+  .hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin: 1.5rem -20px -24px;   /* bleed to the card's side + bottom edges */
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(8, 17, 38, 0.35);
+  }
+  .hero-stat {
+    background: none;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 14px 8px;
+    text-align: center;
+  }
+  .hero-stat:first-child { border-left: none; }
+  .hero-stat-value {
+    color: #FF9A4D;
+    font-size: 1.05rem;
+  }
+  .hero-stat-label { font-size: 0; line-height: 0; }
+  .hero-stat-label::after {
+    display: block;
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  .hero-stat:nth-child(1) .hero-stat-label::after { content: "опыта"; }
+  .hero-stat:nth-child(2) .hero-stat-label::after { content: "партнёров"; }
+  .hero-stat:nth-child(3) .hero-stat-label::after { content: "клиентов"; }
+
+  /* English page (index-en.html, <html lang="en">): same layout, English
+     short labels. These override the Russian defaults above by higher
+     specificity, and only on the EN page. */
+  html[lang="en"] .hero-subtitle::after {
+    content: "AD*STAR®, PP bags, big bags, fabric & yarn — straight from Iran's factories.";
+  }
+  html[lang="en"] .hero-tag:nth-child(1)::after { content: "AD*STAR®"; }
+  html[lang="en"] .hero-tag:nth-child(2)::after { content: "PP bags"; }
+  html[lang="en"] .hero-tag:nth-child(3)::after { content: "Big bags"; }
+  html[lang="en"] .hero-tag:nth-child(4)::after { content: "PP fabric"; }
+  html[lang="en"] .hero-stat:nth-child(1) .hero-stat-label::after { content: "experience"; }
+  html[lang="en"] .hero-stat:nth-child(2) .hero-stat-label::after { content: "partners"; }
+  html[lang="en"] .hero-stat:nth-child(3) .hero-stat-label::after { content: "clients"; }
+
+  /* --- Product cards: clean single-column stack --- */
+  .products-gallery {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* --- Touch targets for all buttons --- */
+  .btn {
+    min-height: 44px;
+  }
+
+  /* --- Floating WhatsApp/Telegram FABs don't overlap content/scroll-top --- */
+  .floating-buttons {
+    right: 12px;
+    bottom: 12px;
+    gap: 0.6rem;
+  }
+  .scroll-top-btn {
+    bottom: 132px;               /* lifted above the two stacked 46px FABs */
+    right: 15px;
+  }
+}
